@@ -14,6 +14,8 @@ counter =: 3 : '(~. y) ,. (;/ (#/.~ y))'
 
 covid =: fixcsv gethttp dquote 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv'
 
+NB. define country before applying lastndays
+country =: ''
 lastndays =: 3 : 0
- |. y {. |. 5 col covid gets 'EGY'
+ |. y {. |. 5 col covid gets country
 )
