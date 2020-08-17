@@ -3,6 +3,7 @@ NB. COVID-19 Data Filtering by Contry and Ploting
 require 'tables/csv web/gethttp plot'
 
 NB. Utility verbs
+ma =: (+/%#)\
 gets =: 4 : '(I. (<y) E. 0{|:x){x'
 lreg =: 4 : 'y %. 1 ,. x'
 treg =: 3 : '((1{((i.#y) lreg y))*(i.#y))+(0{((i.#y) lreg y))'
@@ -22,7 +23,7 @@ report =: 3 : 0
   weekavg =: (+/%#) 7 |. lnd 7                NB. average daily infection for a week
   total =: {. |. 4 col covid gets country     NB. returns last total infection
   cpm =:   {. |. 9 col covid gets country     NB. daily cases per million
-  echo 'Average Weekly: ' , ":weekavg
-  echo 'Total Cases in Country: ', ":total
-  echo 'Daily Cases per Million: ',":cpm 
+  echo '- Daily Average For Last Week: ',":weekavg
+  echo '- Total Cases in Country     : ',":total
+  echo '- Daily Cases per Million    : ',":cpm 
 )
