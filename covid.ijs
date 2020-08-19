@@ -4,6 +4,8 @@ require 'tables/csv web/gethttp plot'
 
 NB. Utility verbs
 ma =: (+/%#)\
+NB. moving average by country for 10 days of daily cases:
+mac =: 3 : '10 (+/%#)\ 5 col covid  gets y' 
 gets =: 4 : '(I. (<y) E. 0{|:x){x'
 lreg =: 4 : 'y %. 1 ,. x'
 treg =: 3 : '((1{((i.#y) lreg y))*(i.#y))+(0{((i.#y) lreg y))'
@@ -16,14 +18,18 @@ covid =: fixcsv gethttp dquote 'https://raw.githubusercontent.com/owid/covid-19-
 NB. define country before applying lastndays
 country =: ''
 
-lnd =: 3 : '|. y {. |. 5 col covid gets country' NB. last n days
+lnd =: 3 : '|., y {. |. 5 col covid gets country' NB. last n days
 
 
 report =: 3 : 0
-  weekavg =: (+/%#) 7 |. lnd 7                NB. average daily infection for a week
+  last =: {. |. 5 col covid gets country 
+  weekavg =: (+/%#) lnd 7                NB. average daily infection for week
+  monthavg =: (+/%#) lnd 30                NB. average daily infection for month
   total =: {. |. 4 col covid gets country     NB. returns last total infection
   cpm =:   {. |. 9 col covid gets country     NB. daily cases per million
-  echo '- Daily Average For Last Week: ',":weekavg
-  echo '- Total Cases in Country     : ',":total
-  echo '- Daily Cases per Million    : ',":cpm 
+  echo '- Last Recorded Daily Infection: ',":last
+  echo '- Daily Average For Last Week  : ',":weekavg
+  echo '- Daily Average For Last Month : ',":monthavg
+  echo '- Total Cases in Country       : ',":total
+  echo '- Daily Cases per Million      : ',":cpm 
 )
