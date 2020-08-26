@@ -15,18 +15,15 @@ counter =: 3 : '(~. y) ,. (;/ (#/.~ y))'
 
 covid =: fixcsv gethttp dquote 'https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv'
 
-NB. define country before applying lastndays
-country =: ''
+lnd =: 4 : '|., y {. |. 5 col covid gets x'  NB. No. of Cases in last n days (y) for country (x)
+lnx =: 4 : '|., y {. |. 11 col covid gets x' NB. No. of Cases/million in last n days (y) for country (x)
 
-lnd =: 3 : '|., y {. |. 5 col covid gets country' NB. last n days
-
-
-report =: 3 : 0
-  last =: {. |. 5 col covid gets country 
-  weekavg =: (+/%#) lnd 7                NB. average daily infection for week
-  monthavg =: (+/%#) lnd 30                NB. average daily infection for month
-  total =: {. |. 4 col covid gets country     NB. returns last total infection
-  cpm =:   {. |. 9 col covid gets country     NB. daily cases per million
+report =: 3 : 0                              NB. country iso code as (y)
+  last =: {. |. 5 col covid gets y 
+  weekavg =: (+/%#) y lnd 7                  NB. average daily infection for week
+  monthavg =: (+/%#) y lnd 30                NB. average daily infection for month
+  total =: {: 4 col covid gets y        NB. returns last total infection
+  cpm =:   {: 11 col covid gets y        NB. daily cases per million
   echo '- Last Recorded Daily Infection: ',":last
   echo '- Daily Average For Last Week  : ',":weekavg
   echo '- Daily Average For Last Month : ',":monthavg
